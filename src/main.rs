@@ -1,6 +1,6 @@
 use std::{os::unix::fs::PermissionsExt};
 
-fn list_directory(path: String) {
+fn list_directory(path: &str) {
     let entries = match std::fs::read_dir(path) {
         Ok(e) => e,
         Err(err) => {
@@ -63,11 +63,13 @@ fn list_directory(path: String) {
 
 fn main() {
     let args: Vec<String> = std::env::args().collect();
-
-    if args.len() > 1 {
-        list_directory(args[1].to_string());
-    } else if args.len() < 2 {
-        list_directory(".".to_string());
+        
+    if args.len() == 1 {
+        list_directory(".");
+        return;
+    } else if args.len() == 2 {
+        list_directory(&args[1]);
+        return;
     } else {
         println!("\nUsage: ls_rs => [path]\n");
     }
